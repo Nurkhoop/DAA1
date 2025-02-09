@@ -2,7 +2,7 @@ package Assignment_4.Main_body;
 
 public class MusicalWork {
     private String name;
-    private int duration; // duration in seconds
+    private int duration;
     private MusicalMedia musicalMedia;
 
     public MusicalWork(String name, int duration) {
@@ -10,7 +10,6 @@ public class MusicalWork {
         this.duration = duration;
     }
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

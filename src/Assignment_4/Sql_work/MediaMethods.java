@@ -3,6 +3,8 @@ package Assignment_4.Sql_work;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 public class MediaMethods {
 
@@ -35,11 +37,7 @@ public class MediaMethods {
             stmt.setInt(1, mediaId);
             int rows = stmt.executeUpdate();
 
-            if (rows > 0) {
-                System.out.println("Media with ID " + mediaId + " has been deleted.");
-            } else {
-                System.out.println("No media found with ID: " + mediaId);
-            }
+            System.out.println(rows > 0 ? "Media deleted successfully." : "No media found with ID: " + mediaId);
 
         } catch (SQLException e) {
             System.err.println("SQL Exception in deleteMedia(): " + e.getMessage());
@@ -64,6 +62,30 @@ public class MediaMethods {
 
         } catch (SQLException e) {
             System.err.println("SQL Exception in updateMedia(): " + e.getMessage());
+        }
+    }
+
+    public static void loadMedia(DefaultTableModel tableModel) {
+        tableModel.setRowCount(0);
+        String query = "SELECT * FROM musical_media";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String author = rs.getString("author");
+                String genre = rs.getString("genre");
+                int year = rs.getInt("year_of_manufacture");
+                int duration = rs.getInt("total_duration");
+                int collectionId = rs.getInt("collection_id");
+
+                tableModel.addRow(new Object[]{id, author, genre, year, duration, collectionId});
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception in loadMedia(): " + e.getMessage());
         }
     }
 }

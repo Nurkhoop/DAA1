@@ -15,7 +15,6 @@ public class MusicalMedia {
         this.works = new ArrayList<>();
     }
 
-    // Getters and Setters
     public String getAuthor() {
         return author;
     }

@@ -3,6 +3,8 @@ package Assignment_4.Sql_work;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 public class CompositionMethods {
 
@@ -56,6 +58,28 @@ public class CompositionMethods {
 
         } catch (SQLException e) {
             System.err.println("SQL Exception in updateComposition(): " + e.getMessage());
+        }
+    }
+
+    public static void loadWorks(DefaultTableModel tableModel) {
+        tableModel.setRowCount(0);
+        String query = "SELECT * FROM musical_works";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int duration = rs.getInt("duration");
+                int mediaId = rs.getInt("media_id");
+
+                tableModel.addRow(new Object[]{id, name, duration, mediaId});
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception in loadWorks(): " + e.getMessage());
         }
     }
 }
